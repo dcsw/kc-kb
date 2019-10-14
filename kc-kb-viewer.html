@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <meta name="description" lang="en"
+    content="A responsive, cross-fading slideshow with images that are animated with a CSS3 'Ken Burns' panning and zooming effect, and captions that sweep in from the bottom right corner." />
+  <title>Responsive Slideshow with Ken Burns Effect + Captions</title>
+  <!-- http://www.dynamicdrive.com/forums/showthread.php?78042-Is-it-Possible-to-Make-This-Slideshow-Responsive -->
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font: 1em/1.75 Verdana, Arial, Helvetica, sans-serif;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%
+    }
+
+    .page-content {
+      padding: 0;
+      /* max-width: 64em; */
+      /* margin: auto */
+    }
+
+    .breadcrumbs {
+      font-size: .75em;
+      border-bottom: 7px solid #eee;
+      margin: 0 -1.25em 1.5em;
+      padding: 1em 1.25em
+    }
+
+    .breadcrumbs span {
+      display: none
+    }
+
+    @media(min-width:30em) {
+      .breadcrumbs {
+        line-height: 3.75;
+        padding: 0 1.25em
+      }
+    }
+
+    @media(min-width:60em) {
+      .breadcrumbs span {
+        display: inline-block
+      }
+    }
+
+    a,
+    a:active,
+    a:visited {
+      color: #c30
+    }
+
+    a:visited {
+      color: #c90
+    }
+
+    a:hover,
+    a:focus {
+      color: #666;
+      text-decoration: none
+    }
+
+    code {
+      display: block;
+      background: #ebebeb;
+      font-size: 0.875em;
+      padding: 1em 2em;
+      overflow-x: scroll;
+      white-space: nowrap
+    }
+
+    blockquote {
+      font-style: italic;
+      margin: 0 5%
+    }
+
+
+    /* slideshow - adapted from http://cssmojo.com/ken-burns-effect/ */
+    #slideshow {
+      position: relative;
+      overflow: hidden;
+      /* max-width: 64em; */
+      padding-bottom: 100%
+    }
+
+    /* (img px height / img px width x 100) = padding-bottom % */
+    #slideshow div {
+      position: absolute;
+      z-index: 2;
+      width: 105%;
+      height: 105%;
+      top: -5%;
+      left: -5%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0;
+      -webkit-transition: opacity 3s, -webkit-transform 8s;
+      -ms-transition: opacity 3s, -ms-transform 8s;
+      transition: opacity 3s, transform 8s
+    }
+
+    #slideshow div {
+      -webkit-transform-origin: bottom left;
+      -ms-transform-origin: bottom left;
+      transform-origin: bottom left
+    }
+
+    #slideshow div:nth-of-type(2n+1) {
+      -webkit-transform-origin: top right;
+      -ms-transform-origin: top right;
+      transform-origin: top right
+    }
+
+    #slideshow div:nth-of-type(3n+1) {
+      -webkit-transform-origin: top left;
+      -ms-transform-origin: top left;
+      transform-origin: top left
+    }
+
+    #slideshow div:nth-of-type(4n+1) {
+      -webkit-transform-origin: bottom right;
+      -ms-transform-origin: bottom right;
+      transform-origin: bottom right
+    }
+
+    #slideshow .fx:first-child+span+div~div,
+    #slideshow .fx1 {
+      z-index: 1
+    }
+
+    #slideshow .fx,
+    #slideshow .fx1 {
+      -webkit-transform: scale(1.35) translate(2.5%);
+      -ms-transform: scale(1.35) translate(2.5%);
+      transform: scale(1.35) translate(2.5%);
+      opacity: 1
+    }
+
+    /* captions */
+    #slideshow span {
+      position: absolute;
+      z-index: 2;
+      bottom: 0;
+      right: 0;
+      display: inline-block;
+      padding: 0% 0%;
+      margin: 0%;
+      font-size: 2.5vw;
+      color: transparent
+    }
+
+    #slideshow .fx:first-child+span+div~div+span,
+    #slideshow .fx1+span {
+      z-index: 1
+    }
+
+    #slideshow .fx+span,
+    #slideshow .fx1+span {
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      -webkit-animation: caption 5s 1s both;
+      animation: caption 5s 1s both
+    }
+
+    @-webkit-keyframes caption {
+      0% {
+        opacity: 0;
+        -webkit-transform: translate3d(100%, 0, 0)
+      }
+
+      20% {
+        opacity: 1;
+        -webkit-transform: none
+      }
+
+      70% {
+        opacity: 1;
+        -webkit-transform: none
+      }
+
+      100% {
+        opacity: 0;
+        -webkit-transform: translate3d(-500%, 0, 0)
+      }
+    }
+
+    @keyframes caption {
+      0% {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0)
+      }
+
+      20% {
+        opacity: 1;
+        transform: none
+      }
+
+      70% {
+        opacity: 1;
+        transform: none
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate3d(-500%, 0, 0)
+      }
+    }
+
+    @media(min-width:42em) {
+      /* bigger than 672px */
+
+      #slideshow span {
+        padding: 1em 1.5em;
+        margin: 2em;
+        font-size: 1em
+      }
+
+    }
+  </style>
+
+  <!--[if lte IE 8]>
+    <style>
+    #slideshow { background:url(https://scontent-lht6-1.cdninstagram.com/vp/f91041ecd1285157dad4cdcb5d006d9a/5E20015F/t51.2885-15/e35/53535909_298326640843720_8890218377008558904_n.jpg?_nc_ht=scontent-lht6-1.cdninstagram.com&_nc_cat=104&se=8&ig_cache_key=MjAwMzYyNDYwNTYxNzgxMTk3Nw%3D%3D.2) center no-repeat } /* static img fallback */
+    #slideshow span { display:none }
+    </style>
+  <![endif]-->
+
+</head>
+
+<body>
+  <div class="page-content">
+    <div id="slideshow"></div>
+  </div>
+
+  <!--[if gte IE 9]><!-->
+  <script>
+    /* http://cssmojo.com/ken-burns-effect/ */
+    function kbSlideshow() { // set .fx1 class on 1st img on page load
+      window.setInterval(kenBurns, 4000); // calls kenBurns() function every 4 secs
+      var images = document.getElementById('slideshow').getElementsByTagName('div'),
+        numberOfImages = images.length, i = 0; // track loop - 1 (not 0) as 1st img is styled on page load
+      images[0].className = "fx"; // style 1st img on page load
+      function kenBurns() {
+        images[i - 1 >= 0 ? i - 1 : numberOfImages - 1].className = ""; // clear .fx class on previous image
+        images[i].className = "fx"; // set .fx class on each img
+        i++;
+        if (i == numberOfImages) { i = 0; }
+      }
+    }
+    setTimeout(kbSlideshow, 1); // short delay so CSS transforms work on 1st img
+
+    var urls = [
+      { text: "Decay -- Imagining reviving soil ecostructures beneath cities...", url: "https://scontent-lht6-1.cdninstagram.com/vp/f91041ecd1285157dad4cdcb5d006d9a/5E20015F/t51.2885-15/e35/53535909_298326640843720_8890218377008558904_n.jpg?_nc_ht=scontent-lht6-1.cdninstagram.com&_nc_cat=104&se=8&ig_cache_key=MjAwMzYyNDYwNTYxNzgxMTk3Nw%3D%3D.2"},
+      { text: "Test Slides...", url:"https://pro2-bar-s3-cdn-cf4.myportfolio.com/b61f6ab843f621378efed3f96b15b298/f8badbe7-607a-40aa-9ae7-e76c532d5da1_rw_1920.jpg?h=93dea9a92a4e0ca62ccf63c4e6ee44f7"},
+      { text: "Generative Drawing", url:"https://pro2-bar-s3-cdn-cf1.myportfolio.com/b61f6ab843f621378efed3f96b15b298/c9d4d307-0f35-4fa8-a006-237449a8705e_rw_1920.jpg?h=66fe007860ffc3ace03dfed4c695923e"},
+      { text: "Modular Screen", url:"https://pro2-bar-s3-cdn-cf6.myportfolio.com/b61f6ab843f621378efed3f96b15b298/afa7ed94-1d26-4391-a11b-800a7bbd1d54_rw_1920.jpg?h=3f4325d85653d16cdde996381f59fbeb"},
+      { text: "Acequia Erosion Module -- Creating modules to mitigate erosion on the Ditch system of the Rio Grande, New Mexico.", url:"https://pro2-bar-s3-cdn-cf2.myportfolio.com/b61f6ab843f621378efed3f96b15b298/d785a0aa-9db9-4a41-aea8-acb9330b37db_rw_600.jpg?h=0df99f3224cda07d5f7ba3fdfdfc604f"},
+      { text: "Ceramic cups and Eggshells dyed with Beet, Cabbage, and Turmeric dyes, set with vinegar.", url:"https://pro2-bar-s3-cdn-cf3.myportfolio.com/b61f6ab843f621378efed3f96b15b298/4b3dbd57-8cf7-46a2-b9bc-aa2228982a9c_rw_1920.jpg?h=7b4f67e58ca1ec3bba7a67c9db58bceb"},
+      { text: "Decay Digression", url:"https://pro2-bar-s3-cdn-cf4.myportfolio.com/b61f6ab843f621378efed3f96b15b298/f947228a-7a6e-4496-ab48-dc51efd4c76a_rw_1920.jpg?h=a6ffabb6994293bf1e227e1b5d46859f"},
+      { text: "Cradle", url:"https://pro2-bar-s3-cdn-cf.myportfolio.com/b61f6ab843f621378efed3f96b15b298/88c05c59-6f62-445a-9e44-27e62214d6f5_rw_1920.jpg?h=1d6fdb6994cd6a62f6541217212bf1f0"},
+      { text: "Decay Digression", url:"https://pro2-bar-s3-cdn-cf5.myportfolio.com/b61f6ab843f621378efed3f96b15b298/60ba6fc3-32e9-406f-bbc4-6db270779ff3_rw_1920.jpg?h=8f0505faeacb2b898bbe033a80ad928b"},
+      { text: "Decay...", url:"https://pro2-bar-s3-cdn-cf3.myportfolio.com/b61f6ab843f621378efed3f96b15b298/ed220449623921039efa40ddfae15792f1e243bc519e1b204103174ba5bcbd7453e4f54962e2fcce_rw_1920.jpg?h=fbf587ad85fdb7254fe59f218856c696"},
+      { text: "Decay...", url: "https://pro2-bar-s3-cdn-cf1.myportfolio.com/b61f6ab843f621378efed3f96b15b298/c74cac11dc96aeeede061974ea8893c43fac15cebcbcec38f155c467dc54be11f1ceb473b659c046_rw_1920.jpg?h=6a0e94f764bf920888157226f0591d79" },
+      { text: "Kaitlyn Cirielli", url:"https://kaitlyncirielli.com"}
+    ];
+
+    var slideshowElement = document.getElementById('slideshow');
+    var styleElement = document.querySelector('head > style');
+    urls.forEach((u,idx) => {
+      styleElement.innerText += `#slideshow div:nth-of-type(${idx+1}) { background-image: url(${u.url}) }`;
+      var divImage = document.createElement('div');
+      var spanText = document.createElement('span');
+      spanText.innerText = `${u.text}`;
+      slideshowElement.appendChild(divImage);
+      slideshowElement.appendChild(spanText);
+    });
+    
+  </script>
+  <!--<![endif]-->
+
+
+</body>
+
+</html>
